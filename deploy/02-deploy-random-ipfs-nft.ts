@@ -9,7 +9,7 @@ type TokenUriMetaData = {
     name: string;
     description: string;
     image: string;
-    attributes: object[];
+    attributes: Object[];
 };
 
 const VRF_SUB_FUND_AMOUNT = ethers.utils.parseEther("30");
@@ -22,14 +22,17 @@ const deployBasicNft: DeployFunction = async (hre: HardhatRuntimeEnvironment) =>
     const chainId: number = network.config.chainId!;
     let vrfCoordinatorV2Address: Address;
     let subscriptionId: string;
-    let tokenUris: string[];
+    let tokenUris: string[] = [
+        "ipfs://QmT4bsro2Etjywzut5wpowLQ1Yp6DfxQZpJpfmgWAQz8KZ",
+        "ipfs://QmSKhxNsZUKsRvQRaHTwq4DyTftKogX4Uv1DtbUm2VThZk",
+        "ipfs://QmaJtU2zcYPFMyZtNgZzFzTofGtjvzpHzogvDhWcBHSzBW"
+    ];
 
     // get the IPFS hashes of my images
     if (process.env.UPLOAD_TO_PINATA == "true") {
         tokenUris = await handleTokenUris();
+        log("----------------------------------");
     }
-
-    log("----------------------------------");
 
     if (developmentChains.includes(network.name)) {
         const vrfCoordinatorV2Mock = await ethers.getContract("VRFCoordinatorV2Mock");
@@ -44,34 +47,35 @@ const deployBasicNft: DeployFunction = async (hre: HardhatRuntimeEnvironment) =>
         subscriptionId = networkConfig[chainId]["subscriptionId"]!;
     }
 
-    // const gasLane = networkConfig[chainId]["gasLane"];
-    // const callbackGasLimit = networkConfig[chainId]["callbackGasLimit"];
-    // const mintFee = networkConfig[chainId]["mintFee"];
+    const gasLane = networkConfig[chainId]["gasLane"];
+    const callbackGasLimit = networkConfig[chainId]["callbackGasLimit"];
+    const mintFee = networkConfig[chainId]["mintFee"];
 
-    // const args: any[] = [
-    //     vrfCoordinatorV2Address,
-    //     subscriptionId,
-    //     gasLane,
-    //     callbackGasLimit,
-    //     // tokenUris,
-    //     mintFee
-    // ];
+    const args: any[] = [
+        vrfCoordinatorV2Address,
+        subscriptionId,
+        gasLane,
+        callbackGasLimit,
+        tokenUris,
+        mintFee
+    ];
 
-    // const waitBlockConfirmations = networkConfig[chainId]["blockConfirmations"];
+    const waitBlockConfirmations = networkConfig[chainId]["blockConfirmations"];
 
-    // const raffle = await deploy("RandomIpfsNft", {
-    //     from: deployer,
-    //     args: args,
-    //     log: true,
-    //     waitConfirmations: waitBlockConfirmations
-    // });
-
-    // if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
-    //     log("Verify...");
-    //     await verify(raffle.address, args);
-    // }
+    const randomIpfsNft = await deploy("RandomIpfsNft", {
+        from: deployer,
+        args: args,
+        log: true,
+        waitConfirmations: waitBlockConfirmations
+    });
 
     log("----------------------------------");
+
+    if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
+        log("Verify...");
+        await verify(randomIpfsNft.address, args);
+        log("----------------------------------");
+    }
 };
 
 async function handleTokenUris(): Promise<string[]> {

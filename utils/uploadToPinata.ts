@@ -27,7 +27,7 @@ export async function storeImages(
     return { responses, files };
 }
 
-export async function storeTokenUriMetadata(tokenUriMetadata: object): Promise<PinataPinResponse> {
+export async function storeTokenUriMetadata(tokenUriMetadata: Object): Promise<PinataPinResponse> {
     let response: PinataPinResponse;
     try {
         response = await pinata.pinJSONToIPFS(tokenUriMetadata);
