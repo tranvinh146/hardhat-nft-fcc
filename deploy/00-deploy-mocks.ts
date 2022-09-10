@@ -10,6 +10,9 @@ const GAS_PRICE_LINK = 1e9; // LINK per gas. Calculated value based on the chain
 // Chainlink Nodes pay the gas fees to give us randomness & do external execution
 // So the price of requests change based on the price of gas
 
+const DECIMALS = 18;
+const INITIAL_ANSWER = ethers.utils.parseEther("2000");
+
 const deployMocks: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
     const { deployments, network, getNamedAccounts } = hre;
     const { deploy, log } = deployments;
@@ -21,7 +24,14 @@ const deployMocks: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
         await deploy("VRFCoordinatorV2Mock", {
             from: deployer,
             log: true,
-            args: args
+            args: args,
+        });
+
+        await deploy("MockV3Aggregator", {
+            contract: "MockV3Aggregator",
+            from: deployer,
+            log: true,
+            args: [DECIMALS, INITIAL_ANSWER],
         });
         log("Mocks deploy!");
         log("-----------------------------------------");
