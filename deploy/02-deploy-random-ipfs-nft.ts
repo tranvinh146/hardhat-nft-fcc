@@ -1,7 +1,7 @@
 import { ethers } from "hardhat";
 import { Address, DeployFunction } from "hardhat-deploy/dist/types";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
-import { developmentChains, DOG_TOKEN_URIS, networkConfig } from "../helper-hardhat-config";
+import { developmentChains, networkConfig } from "../helper-hardhat-config";
 import { storeImages, storeTokenUriMetadata } from "../utils/uploadToPinata";
 import verify from "../utils/verify";
 
@@ -109,6 +109,6 @@ async function handleTokenUris(): Promise<string[]> {
     return tokenUris;
 }
 
-deployRandomIpfs.tags = ["all", "randomIpfsNft"];
+deployRandomIpfs.tags = ["all", "randomIpfsNft", "main"];
 
 export default deployRandomIpfs;

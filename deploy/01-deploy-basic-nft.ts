@@ -15,7 +15,7 @@ const deployBasicNft: DeployFunction = async (hre: HardhatRuntimeEnvironment) =>
         from: deployer,
         args: args,
         log: true,
-        waitConfirmations: networkConfig[chainId]["blockConfirmations"]
+        waitConfirmations: networkConfig[chainId]["blockConfirmations"],
     });
 
     if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
@@ -25,6 +25,6 @@ const deployBasicNft: DeployFunction = async (hre: HardhatRuntimeEnvironment) =>
     log("----------------------------------");
 };
 
-deployBasicNft.tags = ["all", "basicNft"];
+deployBasicNft.tags = ["all", "basicNft", "main"];
 
 export default deployBasicNft;

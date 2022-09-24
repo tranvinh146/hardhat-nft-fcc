@@ -9,6 +9,7 @@ import "hardhat-deploy";
 const MAINNET_RPC_URL = process.env.MAINNET_RPC_URL || "";
 
 const RINKEBY_RPC_URL = process.env.RINKEBY_RPC_URL;
+const GOERLI_RPC_URL = process.env.GOERLI_RPC_URL;
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY;
 
@@ -26,14 +27,21 @@ const config: HardhatUserConfig = {
         },
         rinkeby: {
             chainId: 4,
-            url: RINKEBY_RPC_URL,
+            url: RINKEBY_RPC_URL || "",
+            accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],
+            saveDeployments: true,
+        },
+        goerli: {
+            chainId: 5,
+            url: GOERLI_RPC_URL || "",
             accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],
             saveDeployments: true,
         },
     },
     etherscan: {
         apiKey: {
-            rinkeby: ETHERSCAN_API_KEY || "",
+            // rinkeby: ETHERSCAN_API_KEY || "",
+            goerli: ETHERSCAN_API_KEY || "",
         },
     },
     namedAccounts: {
