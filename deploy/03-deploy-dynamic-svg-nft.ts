@@ -8,7 +8,7 @@ import fs from "fs";
 const SVG_HIGN_IMAGE = "";
 const SVG_LOW_IMAGE = "";
 
-const deployFunc: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
+const deployDynamicSvgNft: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
     const { deployments, getNamedAccounts } = hre;
     const { deploy, log } = deployments;
     const { deployer } = await getNamedAccounts();
@@ -42,6 +42,6 @@ const deployFunc: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
     }
 };
 
-deployFunc.tags = ["all", "dynamicsvg"];
+deployDynamicSvgNft.tags = ["all", "dynamicSvgNft", "main"];
 
-export default deployFunc;
+export default deployDynamicSvgNft;

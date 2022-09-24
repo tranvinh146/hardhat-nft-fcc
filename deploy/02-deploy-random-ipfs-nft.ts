@@ -15,7 +15,7 @@ type TokenUriMetaData = {
 const VRF_SUB_FUND_AMOUNT = ethers.utils.parseEther("30");
 const imagesLocation = "images/randomNft";
 
-const deployBasicNft: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
+const deployRandomIpfs: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
     const { getNamedAccounts, deployments, network } = hre;
     const { deploy, log } = deployments;
     const { deployer } = await getNamedAccounts();
@@ -25,7 +25,7 @@ const deployBasicNft: DeployFunction = async (hre: HardhatRuntimeEnvironment) =>
     let tokenUris: string[] = [
         "ipfs://QmT4bsro2Etjywzut5wpowLQ1Yp6DfxQZpJpfmgWAQz8KZ",
         "ipfs://QmSKhxNsZUKsRvQRaHTwq4DyTftKogX4Uv1DtbUm2VThZk",
-        "ipfs://QmaJtU2zcYPFMyZtNgZzFzTofGtjvzpHzogvDhWcBHSzBW"
+        "ipfs://QmaJtU2zcYPFMyZtNgZzFzTofGtjvzpHzogvDhWcBHSzBW",
     ];
 
     // get the IPFS hashes of my images
@@ -57,7 +57,7 @@ const deployBasicNft: DeployFunction = async (hre: HardhatRuntimeEnvironment) =>
         gasLane,
         callbackGasLimit,
         tokenUris,
-        mintFee
+        mintFee,
     ];
 
     const waitBlockConfirmations = networkConfig[chainId]["blockConfirmations"];
@@ -66,7 +66,7 @@ const deployBasicNft: DeployFunction = async (hre: HardhatRuntimeEnvironment) =>
         from: deployer,
         args: args,
         log: true,
-        waitConfirmations: waitBlockConfirmations
+        waitConfirmations: waitBlockConfirmations,
     });
 
     log("----------------------------------");
@@ -86,8 +86,8 @@ async function handleTokenUris(): Promise<string[]> {
     const attributes = [
         {
             trait_type: "Cuteness",
-            value: "100"
-        }
+            value: "100",
+        },
     ];
     // store metadata on IPFS
     for (let imageUploadResponseIndex in imageUploadResponses) {
@@ -99,7 +99,7 @@ async function handleTokenUris(): Promise<string[]> {
             name,
             description,
             image,
-            attributes
+            attributes,
         };
         const metadataUploadResponse = await storeTokenUriMetadata(tokenUriMetadata);
         tokenUris.push(`ipfs://${metadataUploadResponse.IpfsHash}`);
@@ -109,6 +109,6 @@ async function handleTokenUris(): Promise<string[]> {
     return tokenUris;
 }
 
-deployBasicNft.tags = ["all", "randomIpfsNft"];
+deployRandomIpfs.tags = ["all", "randomIpfsNft"];
 
-export default deployBasicNft;
+export default deployRandomIpfs;

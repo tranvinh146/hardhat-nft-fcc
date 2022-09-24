@@ -22,7 +22,7 @@ import { RandomIpfsNft, VRFCoordinatorV2Mock } from "../../typechain-types";
           });
 
           describe("constructor", () => {
-              it("should intialize Random IPFS NFT correctly", async () => {
+              it("should initialize Random IPFS NFT correctly", async () => {
                   const mintFee = await randomIpfsNft.getMintFee();
                   const lastTokenUri = await randomIpfsNft.getDogTokenUris(2);
                   assert.equal(mintFee.toString(), networkConfig[chainId]["mintFee"]);
